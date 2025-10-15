@@ -19,7 +19,7 @@ jobs:
                   dotnet-version: '8.x'
 
             - name: Build Code
-              run: dontnet build --configuration Release
+              run: dotnet build --configuration Release
 
             - name: Publish Code
               run: dotnet publish -c Release --property:PublishDir="{{env.DOTNET_ROOT}}\myapp"
