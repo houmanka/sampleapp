@@ -22,7 +22,7 @@ jobs:
               run: dotnet build --configuration Release
 
             - name: Publish Code
-              run: dotnet publish -c Release --property:PublishDir="{{env.DOTNET_ROOT}}\myapp"
+              run: dotnet publish -c Release --property:PublishDir="${{env.DOTNET_ROOT}}\myapp"
 
             - name: Deploy Artifact
               uses: actions/upload-artifact@v4.3.6
