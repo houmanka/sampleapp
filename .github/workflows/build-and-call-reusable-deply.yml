@@ -30,7 +30,7 @@ jobs:
 
     call-reusable-deploy-workflow:
         needs: build-job
-        uses: ./.github/workflows/resuable-deploy.yml
+        uses: houmanka/shared-workflows/.github/workflows/reusable-shared-deploy-repo.yml@main
         with:
             package-name: .net-app
             app-name: appsvc1
