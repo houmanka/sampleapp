@@ -3,40 +3,40 @@ name: Build code and cell reusable deploy workflow TEMPLATE
 on: 
   push:
     branches: [ "main" ]
-  pull-request:
+  pull_request:
     branches: [ "main" ]
 
-  jobs:
-    build-job:
-        runs-on: windows-latest
+jobs:
+  build-job:
+    runs-on: windows-latest
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4.1.7
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
 
-            - name: Set up .NET Core
-              uses: actions/setup-dotnet@v4.0.1
-              with:
-                  dotnet-version: '8.x'
-
-            - name: Build Code
-              run: dotnet build --configuration Release
-
-            - name: Publish Code
-              run: dotnet publish -c Release --property:PublishDir="${{env.DOTNET_ROOT}}\myapp"
-
-            - name: Deploy Artifact
-              uses: actions/upload-artifact@v4.3.6
-              with:
-                 name: .net-app
-                 path: ${{env.DOTNET_ROOT}}\myapp
-
-    call-reusable-deploy-workflow:
-        needs: build-job
-        uses: houmanka/shared-workflows/.github/workflows/reusable-shared-deploy-repo.yml@main
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4.0.1
         with:
-            package-name: .net-app
-            app-name: appsvc1
-            deployment-slot: development
-        secrets:
-            azure-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          dotnet-version: '8.x'
+
+      - name: Build Code
+        run: dotnet build --configuration Release
+
+      - name: Publish Code
+        run: dotnet publish -c Release --property:PublishDir="${{env.DOTNET_ROOT}}\myapp"
+
+      - name: Deploy Artifact
+        uses: actions/upload-artifact@v4.3.6
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}\myapp
+
+  call-reusable-deploy-workflow:
+    needs: build-job
+    uses: houmanka/shared-workflows/.github/workflows/reusable-shared-deploy-repo.yml@main
+    with:
+      package-name: .net-app
+      app-name: appsvc1
+      deployment-slot: development
+    secrets:
+      azure-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
